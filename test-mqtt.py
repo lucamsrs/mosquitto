@@ -7,7 +7,7 @@ def test_connectivity():
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(10)
-        result = sock.connect_ex(('mosquitto-production.up.railway.app', 1883))
+        result = sock.connect_ex(('mosquitto-aps.up.railway.app', 1883))
         sock.close()
         
         if result == 0:
