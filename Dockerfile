@@ -1,20 +1,16 @@
 FROM eclipse-mosquitto:2.0
 
-# Criar diretório de configuração
-RUN mkdir -p /mosquitto/config
+# Criar diretórios necessários
+RUN mkdir -p /mosquitto/config /mosquitto/data /mosquitto/log
 
-# Arquivo de configuração personalizado
+# Copiar configuração
 COPY mosquitto.conf /mosquitto/config/mosquitto.conf
 
-# Criar arquivo de senhas
-RUN mkdir -p /mosquitto/data
-RUN touch /mosquitto/data/passwd
-
-# Definir usuário
-RUN mosquitto_passwd -b /mosquitto/data/passwd iot_user secure_password_123
+# Definir permissões
+RUN chown -R mosquitto:mosquitto /mosquitto/
 
 # Expor portas
 EXPOSE 1883 9001
 
-# Comando inicial
-CMD ["mosquitto", "-c", "/mosquitto/config/mosquitto.conf"]
+# Comando inicial com verbose para debug
+CMD ["mosquitto", "-c", "/mosquitto/config/mosquitto.conf", "-v"]
